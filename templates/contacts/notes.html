@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>All Contacts</h1>
+<h1> Contact Details </h1>
 
-<p><a href="{% url 'add_contact' %}">Add New Contact</a></p>
+<p><a href="{% url 'add_contact' %}"> Add New Contact </a></p>
 
 <div class="flex flex-wrap">
-  {% for contact in contacts %}
+
   <div class="w-33 pa3">
     <h2>{{ contact.name }}</h2>
 
@@ -42,11 +42,39 @@
     </div>
     {% endif %}
 
+    <h1> Notes </h1>
+    {% for note in contact.notes.all %}
+
+    {% if note.text %}
+    <div class="flex">
+      <div class="pr2"><i class="icofont-notepad"></i></div>
+      <div>{{ note.text }}</div>
+    </div>
+    {% endif %}
+
+    {% if note.time %}
+    <div class="flex">
+      <div class="pr2"><i class="icofont-clock-time"></i></div>
+      <div>{{ note.time }}</div>
+    </div>
+    {% endif %}
+    {% endfor %}
+
+    <div>
+      <form action="#" method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div>
+          <button type="submit">Submit</button>
+        </div>
+      </form>
+    </div>
+
     <p>
       <a href="{% url 'edit_contact' pk=contact.pk %}">Edit Contact</a><br>    
       <a class="red" href="{% url 'delete_contact' pk=contact.pk %}">Delete Contact</a>
     </p>
   </div>
-  {% endfor %}
+
 </div>  
 {% endblock %}
